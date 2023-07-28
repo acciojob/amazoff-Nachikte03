@@ -1,18 +1,14 @@
 package com.driver;
 
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Service
 public class OrderService {
 
     HashMap<String,Order> idOrderMap;
     HashMap<String,DeliveryPartner> idDeliveryPartnerMap;
     HashMap<String, List<String>> deliveryIdOrderListMap;
-
     HashMap<String,String> orderIdDeliveryIdMap;
 
     public OrderService(){
@@ -22,16 +18,14 @@ public class OrderService {
         orderIdDeliveryIdMap = new HashMap<>();
     }
 
-    public Order addOrder(Order order){
+    public void addOrder(Order order){
         String id = order.getId();
         idOrderMap.put(id,order);
-        return order;
     }
 
-    public DeliveryPartner addPartner(String id){
+    public void addPartner(String id){
         DeliveryPartner deliveryPartner = new DeliveryPartner(id);
         idDeliveryPartnerMap.put(id,deliveryPartner);
-        return deliveryPartner;
     }
 
     public void addOrderPartnerPair(String orderId,String deliverPartnerId){
@@ -63,11 +57,7 @@ public class OrderService {
     }
 
     public List<String> getAllOrders() {
-        List<String> list = new ArrayList<>();
-        for(String id:idOrderMap.keySet()){
-            list.add(id);
-        }
-        return list;
+        return new ArrayList<>(idOrderMap.keySet());
     }
 
     public Integer getCountOfUnassignedOrders(){
@@ -90,7 +80,7 @@ public class OrderService {
 
 
     public String getLastDeliveryTimeByPartnerId(String partnerId){
-        Integer k = 0;
+        int k = 0;
         List<String> p = deliveryIdOrderListMap.get(partnerId);
         for(String id:p){
             Order order = idOrderMap.get(id);
@@ -99,21 +89,17 @@ public class OrderService {
         return k/60 + ":" + k%60;
     }
 
-    public DeliveryPartner deletePartnerById(String partnerId){
+    public void deletePartnerById(String partnerId){
         DeliveryPartner deliveryPartner = idDeliveryPartnerMap.get(partnerId);
-        if(deliveryPartner!=null)
         idDeliveryPartnerMap.remove(partnerId);
         List<String> p1 = deliveryIdOrderListMap.get(partnerId);
-        if(deliveryIdOrderListMap.containsKey(partnerId))
         deliveryIdOrderListMap.remove(partnerId);
         for(String id:p1){
-            if(orderIdDeliveryIdMap.containsKey(id))
             orderIdDeliveryIdMap.remove(id);
         }
-        return deliveryPartner;
     }
 
-    public Order deleteOrderById(String id){
+    public void deleteOrderById(String id){
         Order order = idOrderMap.get(id);
         String pankya = orderIdDeliveryIdMap.get(id);
         idOrderMap.get(id);
@@ -125,7 +111,6 @@ public class OrderService {
         k.setNumberOfOrders(k.getNumberOfOrders()-1);
         if(order!=null)
         p.remove(id);
-        return order;
     }
 
 
