@@ -34,7 +34,7 @@ public class OrderService {
         return deliveryPartner;
     }
 
-    public void addOrderpartnerPair(String orderId,String deliverPartnerId){
+    public void addOrderPartnerPair(String orderId,String deliverPartnerId){
         orderIdDeliveryIdMap.put(orderId,deliverPartnerId);
         if(deliveryIdOrderListMap.containsKey(deliverPartnerId)){
             deliveryIdOrderListMap.get(deliverPartnerId).add(orderId);
@@ -58,7 +58,7 @@ public class OrderService {
         return idDeliveryPartnerMap.get(id).getNumberOfOrders();
     }
 
-    public List<String> getOrdersByPartnerId(String id){
+        public List<String> getOrdersByPartnerId(String id){
         return deliveryIdOrderListMap.get(id);
     }
 
@@ -101,10 +101,13 @@ public class OrderService {
 
     public DeliveryPartner deletePartnerById(String partnerId){
         DeliveryPartner deliveryPartner = idDeliveryPartnerMap.get(partnerId);
+        if(deliveryPartner!=null)
         idDeliveryPartnerMap.remove(partnerId);
         List<String> p1 = deliveryIdOrderListMap.get(partnerId);
+        if(deliveryIdOrderListMap.containsKey(partnerId))
         deliveryIdOrderListMap.remove(partnerId);
         for(String id:p1){
+            if(orderIdDeliveryIdMap.containsKey(id))
             orderIdDeliveryIdMap.remove(id);
         }
         return deliveryPartner;
@@ -114,8 +117,13 @@ public class OrderService {
         Order order = idOrderMap.get(id);
         String pankya = orderIdDeliveryIdMap.get(id);
         idOrderMap.get(id);
+        if(pankya!=null)
         orderIdDeliveryIdMap.remove(pankya);
         List<String> p = deliveryIdOrderListMap.get(pankya);
+        DeliveryPartner k = idDeliveryPartnerMap.get(pankya);
+        if(k!=null)
+        k.setNumberOfOrders(k.getNumberOfOrders()-1);
+        if(order!=null)
         p.remove(id);
         return order;
     }
