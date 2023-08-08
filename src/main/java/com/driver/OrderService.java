@@ -110,7 +110,7 @@ public class OrderService {
             Order order = idOrderMap.get(id);
             k = Math.max(k,order.getDeliveryTime());
         }
-        return k/60 + ":" + k%60;
+        return String.valueOf(k);
     }
 
     public void deletePartnerById(String partnerId){
