@@ -104,19 +104,34 @@ public class OrderService {
 
 
     public String getLastDeliveryTimeByPartnerId(String partnerId){
-        int k = 0;
+        int k = -1;
         if(!deliveryIdOrderListMap.containsKey(partnerId)){
             return "";
         }
-        List<String> p = deliveryIdOrderListMap.get(partnerId);
-        for(String id:p){
+        List<String> list = deliveryIdOrderListMap.get(partnerId);
+        for(String id:list){
             Order order = idOrderMap.get(id);
             k = Math.max(k,order.getDeliveryTime());
         }
-        if(k==0){
+        if(k==-1){
             return "";
         }
-        return String.valueOf(k);
+        String h = "";
+        if((k/60)<10){
+            h = "0"+k/60;
+        }
+        else{
+            h = ""+k/60;
+        }
+        String p = "";
+        k = k%60;
+        if(k<10){
+            p = "0"+k;
+        }
+        else{
+            p = ""+k;
+        }
+        return String.valueOf(h+":"+p);
     }
 
     public void deletePartnerById(String partnerId){
