@@ -106,6 +106,9 @@ public class OrderService {
     public String getLastDeliveryTimeByPartnerId(String partnerId){
         int k = 0;
         List<String> p = deliveryIdOrderListMap.get(partnerId);
+        if(!deliveryIdOrderListMap.containsKey(partnerId)){
+            return "";
+        }
         for(String id:p){
             Order order = idOrderMap.get(id);
             k = Math.max(k,order.getDeliveryTime());
